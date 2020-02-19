@@ -9,6 +9,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { Animes } from './animes/animes.entity';
 import { Generos } from './generos/generos.entity';
+import { UsuariosController } from './usuarios/usuarios.controller';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import {Usuarios} from "./usuarios/usuarios.entity";
 
 @Module({
   imports: [
@@ -21,11 +24,12 @@ import { Generos } from './generos/generos.entity';
       username: 'jdjuxx',
       password: '1234',
       database: 'personal_project',
-      entities: [Animes, Generos],
+      entities: [Animes, Generos, Usuarios],
       synchronize: true,
     }),
+    UsuariosModule,
   ],
-  controllers: [AppController, GenerosController, AnimesController],
+  controllers: [AppController, GenerosController, AnimesController, UsuariosController],
   providers: [AppService],
 })
 export class AppModule {

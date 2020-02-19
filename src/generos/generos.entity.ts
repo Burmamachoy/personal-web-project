@@ -7,16 +7,28 @@ export class Generos{
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    name: 'nombre',
+    length: 32,
+  })
   nombre: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    name: 'descripcion',
+    length: 256,
+  })
   descripcion: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    name: 'publicoPrincipal',
+    length: 32,
+  })
   publicoPrincipal: string;
 
   @OneToMany(type => Animes, animes => animes.generos)
-  animes: Generos[];
+  animes: Animes[];
 
 }
