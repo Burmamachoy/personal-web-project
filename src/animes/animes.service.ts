@@ -30,4 +30,29 @@ export class AnimesService {
             .save(anime);
     }
 
+    encontrarAnime(id: number): Promise<Animes | undefined>{
+        return this._repositorioAnimes
+          .findOne(id)
+    }
+
+    buscarAnime(
+      where:any = {},
+      skip = 0,
+      take = 10,
+      order: any = {
+          id: 'DESC',
+          nombre: 'ASC'
+      }
+
+    ) : Promise<Animes[]>{
+        return this._repositorioAnimes
+          .find({
+              where: where,
+              skip: skip,
+              take: take,
+              order: order,
+          })
+    }
+
+
 }

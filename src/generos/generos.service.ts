@@ -30,6 +30,28 @@ export class GenerosService {
             .save(genero);
     }
 
+    encontrarGenero(id: number): Promise<Generos | undefined>{
+        return this._repositorioGeneros
+          .findOne(id)
+    }
 
+    buscarGenero(
+      where:any = {},
+      skip = 0,
+      take = 10,
+      order: any = {
+          id: 'DESC',
+          nombre: 'ASC'
+      }
+
+    ) : Promise<Generos[]>{
+        return this._repositorioGeneros
+          .find({
+              where: where,
+              skip: skip,
+              take: take,
+              order: order,
+          })
+    }
 
 }

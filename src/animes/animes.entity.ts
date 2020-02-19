@@ -42,9 +42,6 @@ export class Animes{
   director: string;
 
   @ManyToOne(type => Generos, generos => generos.animes)
-  generos: Generos;
-
-  
-
+  generos: Generos
 
 }

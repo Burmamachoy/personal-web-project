@@ -31,6 +31,29 @@ export class UsuariosService {
             .save(usuario);
     }
 
+    encontrarUsuario(id: number): Promise<Usuarios | undefined>{
+        return this._repositorioUsuarios
+          .findOne(id)
+    }
+
+    buscarUsuario(
+      where:any = {},
+      skip = 0,
+      take = 10,
+      order: any = {
+          id: 'DESC',
+          correo: 'ASC'
+      }
+    ) : Promise<Usuarios[]>{
+        return this._repositorioUsuarios
+          .find({
+              where: where,
+              skip: skip,
+              take: take,
+              order: order,
+          })
+    }
+
     generarSalt() {
         return crypto.randomBytes(16).toString('hex');
     }

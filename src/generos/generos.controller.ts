@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Param, Post} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import {GenerosService} from "./generos.service";
 import {Generos} from "./generos.entity";
 import {GenerosCreateDto} from "./generos-create.dto";
@@ -37,7 +37,7 @@ export class GenerosController {
         }
     }
 
-    @Post('actualizar/:id')
+    @Put(':id')
     async actualizarGenero(
         @Body() genero: Generos,
         @Param('id') id: string,
@@ -60,7 +60,7 @@ export class GenerosController {
 
     }
 
-    @Delete('eliminar:id')
+    @Delete(':id')
     eliminarGenero(
         @Param('id') id: string,
     ): Promise<DeleteResult> {
@@ -68,6 +68,52 @@ export class GenerosController {
             .borrarGenero(
                 +id,
             );
+    }
+
+    @Get(':id')
+    obtenerGenero(
+      @Param('id') id: string,
+    ): Promise<Generos | undefined> {
+        return this.generosService
+          .encontrarGenero(
+            Number(id),
+          );
+    }
+
+    @Get()
+    async buscarGeneros(
+      @Query('skip') skip?: string | number,
+      @Query('take') take?: string | number,
+      @Query('where') where?: string,
+      @Query('order') order?: string,
+    ): Promise<Generos[]> {
+        if (order) {
+            try {
+                order = JSON.parse(order);
+            } catch (e) {
+                order = undefined;
+            }
+        }
+        if (where) {
+            try {
+                where = JSON.parse(where);
+            } catch (e) {
+                where = undefined;
+            }
+        }
+        if (skip) {
+            skip = +skip;
+        }
+        if (take) {
+            take = +take;
+        }
+        return this.generosService
+          .buscarGenero(
+            where,
+            skip as number,
+            take as number,
+            order,
+          );
     }
 
 }

@@ -25,4 +25,9 @@ export class AnimesCreateDto {
     @IsString()
     @MaxLength(32)
     director: string;
+
+    @IsNotEmpty()
+    @IsInt()
+    @Min(0)
+    idGenero: number;
 }
