@@ -17,6 +17,7 @@ import {Usuarios} from "./usuarios/usuarios.entity";
   imports: [
     GenerosModule,
     AnimesModule,
+    UsuariosModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: '172.17.0.2',
@@ -24,10 +25,10 @@ import {Usuarios} from "./usuarios/usuarios.entity";
       username: 'jdjuxx',
       password: '1234',
       database: 'personal_project',
+      dropSchema:true,
       entities: [Animes, Generos, Usuarios],
       synchronize: true,
     }),
-    UsuariosModule,
   ],
   controllers: [AppController, GenerosController, AnimesController, UsuariosController],
   providers: [AppService],

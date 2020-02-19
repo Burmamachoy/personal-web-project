@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
+import {DeleteResult, Repository} from "typeorm";
 import {Usuarios} from "./usuarios.entity";
 import * as crypto from "crypto";
 
@@ -15,6 +15,20 @@ export class UsuariosService {
     crearUsuario(usuario:Usuarios){
         return this._repositorioUsuarios
             .save<Usuarios>(usuario);
+    }
+
+    borrarUsuario(id:number):Promise<DeleteResult>{
+        return this._repositorioUsuarios
+            .delete({id})
+    }
+
+    actualizarUsuario(
+        id: number,
+        usuario: Usuarios
+    ): Promise<Usuarios>{
+        usuario.id = id;
+        return this._repositorioUsuarios
+            .save(usuario);
     }
 
     generarSalt() {

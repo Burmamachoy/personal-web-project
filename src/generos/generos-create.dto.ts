@@ -1,6 +1,6 @@
 import {IsNotEmpty, IsString, MaxLength} from "class-validator";
 
-export class generosCreateDto {
+export class GenerosCreateDto {
     @IsNotEmpty()
     @IsString()
     @MaxLength(32)

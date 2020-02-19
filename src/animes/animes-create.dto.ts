@@ -1,6 +1,6 @@
 import {IsInt, IsNotEmpty, IsString, MaxLength, Min} from "class-validator";
 
-export class animesCreateDto {
+export class AnimesCreateDto {
     @IsNotEmpty()
     @IsString()
     @MaxLength(32)

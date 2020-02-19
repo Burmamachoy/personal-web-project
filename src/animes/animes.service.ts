@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {Animes} from "./animes.entity";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
+import {DeleteResult, Repository} from "typeorm";
 
 @Injectable()
 export class AnimesService {
@@ -14,6 +14,20 @@ export class AnimesService {
     crearAnime(anime:Animes){
         return this._repositorioAnimes
             .save<Animes>(anime);
+    }
+
+    borrarAnime(id:number): Promise<DeleteResult>{
+        return this._repositorioAnimes
+            .delete({id})
+    }
+
+    actualizarAnime(
+        id: number,
+        anime: Animes
+    ): Promise<Animes>{
+        anime.id = id;
+        return this._repositorioAnimes
+            .save(anime);
     }
 
 }

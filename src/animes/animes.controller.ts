@@ -1,8 +1,10 @@
-import {Body, Controller, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Param, Post} from '@nestjs/common';
 import {AnimesService} from "./animes.service";
 import {Animes} from "./animes.entity";
-import {animesCreateDto} from "./animes.create-dto";
+import {AnimesCreateDto} from "./animes-create.dto";
 import {validate} from "class-validator";
+import {DeleteResult} from "typeorm";
+import {AnimesUpdateDto} from "./animes-update-dto";
 
 @Controller('animes')
 export class AnimesController {
@@ -14,7 +16,7 @@ export class AnimesController {
     async crearAnime(
         @Body() anime: Animes,
     ): Promise<void> {
-        const animeCreateDTO = new animesCreateDto();
+        const animeCreateDTO = new AnimesCreateDto();
         animeCreateDTO.nombre = anime.nombre;
         animeCreateDTO.anioLanzamiento = anime.anioLanzamiento;
         animeCreateDTO.estudio = anime.estudio;
@@ -38,6 +40,39 @@ export class AnimesController {
 
     }
 
+    @Post(':id')
+    async actualizarAnime(
+        @Body() anime: Animes,
+        @Param('id') id: string,
+    ): Promise<void> {
+        const animeUpdateDTO = new AnimesUpdateDto();
+        animeUpdateDTO.nombre = anime.nombre;
+        animeUpdateDTO.anioLanzamiento = anime.anioLanzamiento;
+        animeUpdateDTO.estudio = anime.estudio;
+        animeUpdateDTO.numeroEpisodios = anime.numeroEpisodios;
+        animeUpdateDTO.director = anime.director;
+        animeUpdateDTO.id = +id;
+        const errores = await validate(animeUpdateDTO)
+        if(errores.length > 0){
 
+        } else{
+            await  this.animesService
+                .actualizarAnime(
+                    +id,
+                    anime,
+                )
+        }
+
+    }
+
+    @Delete(':id')
+    eliminarAnime(
+        @Param('id') id: string,
+    ): Promise<DeleteResult> {
+        return this.animesService
+            .borrarAnime(
+                +id,
+            )
+    }
 
 }
