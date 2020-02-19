@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import {AnimesService} from "./animes.service";
 import {Animes} from "./animes.entity";
 import {AnimesCreateDto} from "./animes-create.dto";
@@ -7,6 +7,7 @@ import {DeleteResult} from "typeorm";
 import {AnimesUpdateDto} from "./animes-update-dto";
 import { GenerosService } from '../generos/generos.service';
 import { Generos } from '../generos/generos.entity';
+import { RolesGuard } from '../roles.guard';
 
 @Controller('animes')
 export class AnimesController {
@@ -16,6 +17,7 @@ export class AnimesController {
     ) {}
 
     @Post('crear/:id')
+    @UseGuards(new RolesGuard())
     async crearAnime(
         @Body() anime: Animes,
         @Param('id') id: string,

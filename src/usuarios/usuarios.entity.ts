@@ -10,6 +10,7 @@ export class Usuarios{
         type: 'varchar',
         name: 'correo',
         length: 256,
+        unique: true,
     })
     correo: string;
 

@@ -83,6 +83,12 @@ export class UsuariosController {
           );
     }
 
+    // @Get()
+    // async test(
+    //   @Query('correo') correo?: string,
+    // ) :Promise<Usuarios>{
+    //     return this.usuariosService.encontrarUsuarioPorCorreo(correo)
+    // }
     @Get()
     async buscarUsuarios(
       @Query('skip') skip?: string | number,

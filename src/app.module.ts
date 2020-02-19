@@ -12,6 +12,7 @@ import { Generos } from './generos/generos.entity';
 import { UsuariosController } from './usuarios/usuarios.controller';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import {Usuarios} from "./usuarios/usuarios.entity";
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import {Usuarios} from "./usuarios/usuarios.entity";
       entities: [Animes, Generos, Usuarios],
       synchronize: true,
     }),
+    AuthModule,
   ],
   controllers: [AppController, GenerosController, AnimesController, UsuariosController],
   providers: [AppService],

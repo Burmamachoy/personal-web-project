@@ -36,6 +36,16 @@ export class UsuariosService {
           .findOne(id)
     }
 
+    encontrarUsuarioPorCorreo(correo: string): Promise<Usuarios | undefined>{
+        return this._repositorioUsuarios
+          .findOne({
+            where:{
+              correo: correo
+            }
+          }
+        )
+    }
+
     buscarUsuario(
       where:any = {},
       skip = 0,
