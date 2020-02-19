@@ -7,6 +7,8 @@ import { GenerosModule } from './generos/generos.module';
 import { AnimesModule } from './animes/animes.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
+import { Animes } from './animes/animes.entity';
+import { Generos } from './generos/generos.entity';
 
 @Module({
   imports: [
@@ -19,7 +21,7 @@ import { Connection } from 'typeorm';
       username: 'jdjuxx',
       password: '1234',
       database: 'personal_project',
-      entities: [],
+      entities: [Animes, Generos],
       synchronize: true,
     }),
   ],
