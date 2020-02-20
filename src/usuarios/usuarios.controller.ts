@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query} from '@nestjs/common';
 import {UsuariosService} from "./usuarios.service";
 import {Usuarios} from "./usuarios.entity";
 import {UsuariosCreateDto} from "./usuarios-create.dto";
@@ -6,6 +6,7 @@ import {validate} from "class-validator";
 import {DeleteResult} from "typeorm";
 import {UsuariosUpdateDto} from "./usuarios-update-dto";
 import { Roles } from './roles.entity';
+import {RolesCreateDto} from "./roles-create-dto";
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -14,20 +15,27 @@ export class UsuariosController {
     ) {
     }
 
-    @Post('crear')
+    @Post('crear/:id')
     async crearUsuario(
       @Body() usuario: Usuarios,
+      @Param('id') id: string,
     ): Promise<void> {
         const usuarioCreateDto = new UsuariosCreateDto();
         usuarioCreateDto.correo = usuario.correo;
         usuarioCreateDto.password = usuario.password;
+        usuarioCreateDto.idRol = +id;
         usuario.salt = this.usuariosService.generarSalt();
         const errores = await validate(usuarioCreateDto);
         console.error(errores);
         if (errores.length > 0) {
 
         } else {
-            usuario.password = this.usuariosService.generarPasswordHash(usuario.password, usuario.salt)
+            usuario.password = this.usuariosService.generarPasswordHash(usuario.password, usuario.salt);
+            const rol = this.usuariosService.encontrarRol(+id);
+            if(! await rol) {
+                throw new NotFoundException();
+            }
+            usuario.roles = await rol;
             try {
                 await this.usuariosService
                   .crearUsuario(
@@ -44,7 +52,19 @@ export class UsuariosController {
     async crearRol(
       @Body() rol: Roles,
     ): Promise<void>{
+        const rolesCreateDto = new RolesCreateDto();
+        rolesCreateDto.rol = rol.rol;
+        const errores = await validate(rolesCreateDto);
+        if (errores.length > 0){
 
+        } else {
+            try{
+                await this.usuariosService
+                    .crearRol(rol)
+            } catch (error){
+                console.error(error)
+            }
+        }
     }
 
     @Put(':id')

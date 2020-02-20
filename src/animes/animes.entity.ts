@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import { Generos } from '../generos/generos.entity';
+import {DetalleCarrito} from "../detalle-carrito/detalle-carrito.entity";
 
 @Entity()
 export class Animes{
@@ -41,7 +42,16 @@ export class Animes{
   })
   director: string;
 
+  @Column({
+    type: 'float',
+    name: 'precio',
+  })
+  precio: number;
+
   @ManyToOne(type => Generos, generos => generos.animes)
-  generos: Generos
+  generos: Generos;
+
+  @OneToMany(type => DetalleCarrito, detalle => detalle.anime)
+  detalle: DetalleCarrito;
 
 }

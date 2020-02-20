@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import { Roles } from './roles.entity';
+import {CabeceraCarrito} from "../cabecera-carrito/cabecera-carrito.entity";
 
 @Entity()
 export class Usuarios{
@@ -30,6 +31,9 @@ export class Usuarios{
     salt: string;
 
     @ManyToOne(type => Roles, roles => roles.usuarios)
-    roles: Roles
+    roles: Roles;
+
+    @OneToMany(type => CabeceraCarrito, carrito => carrito.usuario)
+    carritos: CabeceraCarrito[];
 
 }

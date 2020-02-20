@@ -4,10 +4,12 @@ import {AnimesController} from "./animes.controller";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Animes} from "./animes.entity";
 import { GenerosModule } from '../generos/generos.module';
+import {PassportModule} from "@nestjs/passport";
 
 @Module({
   imports:[
       GenerosModule,
+      PassportModule,
       TypeOrmModule
           .forFeature([
               Animes

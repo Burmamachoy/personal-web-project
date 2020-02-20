@@ -14,4 +14,9 @@ export class  UsuariosUpdateDto {
     @IsNumber()
     @Min(0)
     idRol: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    @Min(0)
+    id: number;
 }

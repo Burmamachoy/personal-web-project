@@ -28,6 +28,10 @@ export class AnimesCreateDto {
 
     @IsNotEmpty()
     @IsInt()
+    precio: number;
+
+    @IsNotEmpty()
+    @IsInt()
     @Min(0)
     idGenero: number;
 }

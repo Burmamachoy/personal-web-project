@@ -13,6 +13,13 @@ import { UsuariosController } from './usuarios/usuarios.controller';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import {Usuarios} from "./usuarios/usuarios.entity";
 import { AuthModule } from './auth/auth.module';
+import {Roles} from "./usuarios/roles.entity";
+import { DetalleCarritoController } from './detalle-carrito/detalle-carrito.controller';
+import { CabeceraCarritoController } from './cabecera-carrito/cabecera-carrito.controller';
+import { CabeceraCarritoService } from './cabecera-carrito/cabecera-carrito.service';
+import { DetalleCarritoService } from './detalle-carrito/detalle-carrito.service';
+import { DetalleCarritoModule } from './detalle-carrito/detalle-carrito.module';
+import { CabeceraCarritoModule } from './cabecera-carrito/cabecera-carrito.module';
 
 @Module({
   imports: [
@@ -27,13 +34,15 @@ import { AuthModule } from './auth/auth.module';
       password: '1234',
       database: 'personal_project',
       dropSchema:true,
-      entities: [Animes, Generos, Usuarios],
+      entities: [Animes, Generos, Usuarios, Roles],
       synchronize: true,
     }),
     AuthModule,
+    DetalleCarritoModule,
+    CabeceraCarritoModule,
   ],
-  controllers: [AppController, GenerosController, AnimesController, UsuariosController],
-  providers: [AppService],
+  controllers: [AppController, GenerosController, AnimesController, UsuariosController, DetalleCarritoController, CabeceraCarritoController],
+  providers: [AppService, CabeceraCarritoService, DetalleCarritoService],
 })
 export class AppModule {
   constructor(private readonly connection: Connection) {}

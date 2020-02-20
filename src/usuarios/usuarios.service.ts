@@ -10,6 +10,7 @@ export class UsuariosService {
     constructor(
         @InjectRepository(Usuarios)
         private _repositorioUsuarios: Repository<Usuarios>,
+        @InjectRepository(Roles)
         private _repositorioRoles: Repository<Roles>
     ) {
     }
@@ -38,12 +39,19 @@ export class UsuariosService {
           .findOne(id)
     }
 
+    encontrarRol(id: number): Promise<Roles | undefined>{
+        return this._repositorioRoles
+            .findOne(id)
+    }
+
     encontrarUsuarioPorCorreo(correo: string): Promise<Usuarios | undefined>{
         return this._repositorioUsuarios
           .findOne({
             where:{
               correo: correo
-            }
+            },
+              relations:["roles"]
+
           }
         )
     }

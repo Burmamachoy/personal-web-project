@@ -11,6 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from '../role/guards/role.guard';
 
 @Controller('animes')
+@UseGuards(RoleGuard)
 export class AnimesController {
     constructor(
         private readonly animesService: AnimesService,
@@ -18,8 +19,8 @@ export class AnimesController {
     ) {}
 
     @Post('crear/:id')
-    @Roles('administrator')
-    @UseGuards(AuthGuard(), RoleGuard)
+    @Roles('administrador')
+    @UseGuards(AuthGuard('jwt'), RoleGuard)
     async crearAnime(
         @Body() anime: Animes,
         @Param('id') id: string,
@@ -30,6 +31,7 @@ export class AnimesController {
         animeCreateDTO.estudio = anime.estudio;
         animeCreateDTO.numeroEpisodios = anime.numeroEpisodios;
         animeCreateDTO.director = anime.director;
+        animeCreateDTO.precio = anime.precio;
         animeCreateDTO.idGenero = +id;
         const errores = await validate(animeCreateDTO);
         console.error(errores);
@@ -66,6 +68,7 @@ export class AnimesController {
         animeUpdateDTO.estudio = anime.estudio;
         animeUpdateDTO.numeroEpisodios = anime.numeroEpisodios;
         animeUpdateDTO.director = anime.director;
+        animeUpdateDTO.precio = anime.precio;
         animeUpdateDTO.id = +id;
         const errores = await validate(animeUpdateDTO);
         if(errores.length > 0){
