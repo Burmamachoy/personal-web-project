@@ -6,8 +6,9 @@ import {validate} from "class-validator";
 import {DeleteResult} from "typeorm";
 import {AnimesUpdateDto} from "./animes-update-dto";
 import { GenerosService } from '../generos/generos.service';
-import { Generos } from '../generos/generos.entity';
-import { RolesGuard } from '../roles.guard';
+import { Roles } from '../role/decorators/role.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from '../role/guards/role.guard';
 
 @Controller('animes')
 export class AnimesController {
@@ -17,7 +18,8 @@ export class AnimesController {
     ) {}
 
     @Post('crear/:id')
-    @UseGuards(new RolesGuard())
+    @Roles('administrator')
+    @UseGuards(AuthGuard(), RoleGuard)
     async crearAnime(
         @Body() anime: Animes,
         @Param('id') id: string,

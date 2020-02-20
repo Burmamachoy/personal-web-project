@@ -30,4 +30,5 @@ export class AnimesUpdateDto{
     @IsNumber()
     @Min(0)
     id: number;
+
 }

@@ -5,6 +5,7 @@ import {UsuariosCreateDto} from "./usuarios-create.dto";
 import {validate} from "class-validator";
 import {DeleteResult} from "typeorm";
 import {UsuariosUpdateDto} from "./usuarios-update-dto";
+import { Roles } from './roles.entity';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -37,6 +38,13 @@ export class UsuariosController {
                 console.error(error)
             }
         }
+    }
+
+    @Post('crearRol')
+    async crearRol(
+      @Body() rol: Roles,
+    ): Promise<void>{
+
     }
 
     @Put(':id')

@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Roles } from './roles.entity';
 
 @Entity()
 export class Usuarios{
@@ -27,5 +28,8 @@ export class Usuarios{
         length: 32,
     })
     salt: string;
+
+    @ManyToOne(type => Roles, roles => roles.usuarios)
+    roles: Roles
 
 }

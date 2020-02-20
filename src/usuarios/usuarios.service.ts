@@ -3,12 +3,14 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {DeleteResult, Repository} from "typeorm";
 import {Usuarios} from "./usuarios.entity";
 import * as crypto from "crypto";
+import { Roles } from './roles.entity';
 
 @Injectable()
 export class UsuariosService {
     constructor(
         @InjectRepository(Usuarios)
-        private _repositorioUsuarios: Repository<Usuarios>
+        private _repositorioUsuarios: Repository<Usuarios>,
+        private _repositorioRoles: Repository<Roles>
     ) {
     }
 
@@ -63,6 +65,20 @@ export class UsuariosService {
               order: order,
           })
     }
+
+    crearRol(rol:Roles){
+      return this._repositorioRoles
+        .save<Roles>(rol);
+    }
+
+    // asignarRol(idUsuario: number, idRole: number){
+    //   const user = this._repositorioUsuarios
+    //     .findOne({
+    //       where:{
+    //         id: id
+    //       }
+    //     }
+    // }
 
     generarSalt() {
         return crypto.randomBytes(16).toString('hex');

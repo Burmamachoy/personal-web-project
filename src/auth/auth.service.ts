@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { JwtService } from '@nestjs/jwt';
 
@@ -12,6 +12,9 @@ export class AuthService {
 
   async validateUser(correo: string, password: string): Promise<any> {
     const user = await this.usuarioService.encontrarUsuarioPorCorreo(correo);
+    if(!user) {
+      throw new NotFoundException();
+    }
     const passwordHash = this.usuarioService.generarPasswordHash(password, user.salt);
     if(user && user.password == passwordHash){
       const result= user;
