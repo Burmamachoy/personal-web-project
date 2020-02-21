@@ -25,7 +25,6 @@ export class CabeceraCarritoService {
 
     actualizarTotal(cabeceraCarrito: CabeceraCarrito): number{
         let total  = 0;
-        console.log(cabeceraCarrito);
         function subtotal(detalleCarrito: DetalleCarrito){
             return detalleCarrito.subtotal
         }

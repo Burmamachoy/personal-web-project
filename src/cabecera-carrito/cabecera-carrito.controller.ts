@@ -1,4 +1,4 @@
-import {Body, Controller, Post, Session} from '@nestjs/common';
+import {Body, Controller, Post, Query, Session} from '@nestjs/common';
 import {CabeceraCarritoService} from "./cabecera-carrito.service";
 import {CabeceraCarritoCreateDto} from "./cabecera-carrito-create.dto";
 import {validate} from "class-validator";
@@ -12,18 +12,21 @@ export class CabeceraCarritoController {
 
     @Post('comprar')
     async comprarCarrito(
-        @Body() direccion: string,
+        @Query('direccion') direccion: string,
         @Session() session,
     ) : Promise<void> {
         const cabeceraCarritoCreateDto = new CabeceraCarritoCreateDto();
         cabeceraCarritoCreateDto.direccion = direccion;
-        const errores = await validate(cabeceraCarritoCreateDto)
+        const errores = await validate(cabeceraCarritoCreateDto);
+        console.log(errores);
         if(errores.length > 0){
 
         } else {
             const idCarrito = session.carritoActual;
+            console.log(idCarrito);
             const carrito = await this.cabeceraCarritoService.encontrarCabeceraCarrito(idCarrito);
             carrito.estado = "comprado";
+            carrito.fecha = new Date(Date.now());
             await this.cabeceraCarritoService.actualizarCarrrito(carrito);
         }
 

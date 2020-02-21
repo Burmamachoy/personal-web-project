@@ -38,7 +38,8 @@ import { DetalleCarrito } from './detalle-carrito/detalle-carrito.entity';
       username: 'jdjuxx',
       password: '1234',
       database: 'personal_project',
-      dropSchema:true,
+      //dropSchema:true,
+      logging: "all",
       entities: [
         Animes,
         Generos,

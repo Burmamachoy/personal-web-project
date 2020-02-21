@@ -16,13 +16,13 @@ export class DetalleCarrito{
     cantidad: number;
 
     @Column({
-        type: 'int',
+        type: 'float',
         name: 'precio',
     })
     precio: number;
 
     @Column({
-        type: 'int',
+        type: 'float',
         name: 'subtotal',
     })
     subtotal: number;

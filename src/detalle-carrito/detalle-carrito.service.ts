@@ -3,6 +3,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {DetalleCarrito} from "./detalle-carrito.entity";
 import {DeleteResult, Repository} from "typeorm";
 import {CabeceraCarrito} from "../cabecera-carrito/cabecera-carrito.entity";
+import {Animes} from "../animes/animes.entity";
 
 @Injectable()
 export class DetalleCarritoService {
@@ -34,17 +35,23 @@ export class DetalleCarritoService {
     }
 
     buscarDetalles(
-        where:any = {},
+        anime: Animes,
         skip = 0,
         take = 10,
         order: any = {
-            id: 'DESC',
+            id: 'ASC',
         }
     ) : Promise<DetalleCarrito[]>{
+        const consultaWhere = [
+            {
+                anime: anime
+            },
+        ];
+
         return this._repositorioDetalleCarrito
             .find(
                 {
-                    where: where,
+                    where: consultaWhere,
                     skip: skip,
                     take: take,
                     order: order,
