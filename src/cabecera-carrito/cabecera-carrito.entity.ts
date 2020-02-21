@@ -33,13 +33,15 @@ export class CabeceraCarrito{
         type: 'varchar',
         name: 'direccion',
         length: 128,
+        default: "No definida",
     })
     direccion: string;
 
     @ManyToOne(type => Usuarios, usuario => usuario.carritos)
     usuario: Usuarios;
 
-    @OneToMany(type => DetalleCarrito, detalle => detalle.cabecera)
+    @OneToMany(type => DetalleCarrito, detalle => detalle.cabecera,{cascade: true
+})
     detalle: DetalleCarrito[];
 
 }

@@ -48,7 +48,8 @@ export class Animes{
   })
   precio: number;
 
-  @ManyToOne(type => Generos, generos => generos.animes)
+  @ManyToOne(type => Generos, generos => generos.animes,
+)
   generos: Generos;
 
   @OneToMany(type => DetalleCarrito, detalle => detalle.anime)

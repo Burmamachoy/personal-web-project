@@ -27,18 +27,9 @@ export class DetalleCarrito{
     })
     subtotal: number;
 
-    @Column({ nullable: true})
-    cabeceraId: number;
-
     @ManyToOne(type => CabeceraCarrito, cabecera => cabecera.detalle)
-    @JoinColumn()
     cabecera: CabeceraCarrito;
 
-    @Column({ nullable: true})
-    animeId: number;
-
     @ManyToOne(type => Animes, anime => anime.detalle)
-    @JoinColumn()
     anime: Animes;
-
 }

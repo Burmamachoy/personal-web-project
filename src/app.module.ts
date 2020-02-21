@@ -20,12 +20,17 @@ import { CabeceraCarritoService } from './cabecera-carrito/cabecera-carrito.serv
 import { DetalleCarritoService } from './detalle-carrito/detalle-carrito.service';
 import { DetalleCarritoModule } from './detalle-carrito/detalle-carrito.module';
 import { CabeceraCarritoModule } from './cabecera-carrito/cabecera-carrito.module';
+import { CabeceraCarrito } from './cabecera-carrito/cabecera-carrito.entity';
+import { DetalleCarrito } from './detalle-carrito/detalle-carrito.entity';
 
 @Module({
   imports: [
     GenerosModule,
     AnimesModule,
     UsuariosModule,
+    AuthModule,
+    DetalleCarritoModule,
+    CabeceraCarritoModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: '172.17.0.2',
@@ -34,15 +39,18 @@ import { CabeceraCarritoModule } from './cabecera-carrito/cabecera-carrito.modul
       password: '1234',
       database: 'personal_project',
       dropSchema:true,
-      entities: [Animes, Generos, Usuarios, Roles],
+      entities: [
+        Animes,
+        Generos,
+        Usuarios,
+        Roles,
+        CabeceraCarrito,
+        DetalleCarrito],
       synchronize: true,
     }),
-    AuthModule,
-    DetalleCarritoModule,
-    CabeceraCarritoModule,
   ],
   controllers: [AppController, GenerosController, AnimesController, UsuariosController, DetalleCarritoController, CabeceraCarritoController],
-  providers: [AppService, CabeceraCarritoService, DetalleCarritoService],
+  providers: [AppService],
 })
 export class AppModule {
   constructor(private readonly connection: Connection) {}

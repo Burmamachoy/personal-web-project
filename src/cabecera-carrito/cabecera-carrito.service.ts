@@ -16,7 +16,7 @@ export class CabeceraCarritoService {
     crearCabeceraCarrito(usuario: Usuarios, detalleCarrito: DetalleCarrito){
         const cabeceraCarrito = new CabeceraCarrito();
         cabeceraCarrito.usuario = usuario;
-        cabeceraCarrito.detalle.push(detalleCarrito);
+        cabeceraCarrito.detalle = [detalleCarrito];
         cabeceraCarrito.total = detalleCarrito.subtotal;
         cabeceraCarrito.estado = "creado";
         return this._repositorioCabeceraCarrito
@@ -24,7 +24,8 @@ export class CabeceraCarritoService {
     }
 
     actualizarTotal(cabeceraCarrito: CabeceraCarrito): number{
-        var total : number = 0;
+        let total  = 0;
+        console.log(cabeceraCarrito);
         function subtotal(detalleCarrito: DetalleCarrito){
             return detalleCarrito.subtotal
         }
@@ -57,6 +58,7 @@ export class CabeceraCarritoService {
         return this._repositorioCabeceraCarrito
             .find(
                 {
+                    relations: ["detalle"],
                     where: where,
                     skip: skip,
                     take: take,

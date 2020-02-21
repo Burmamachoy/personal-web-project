@@ -1,10 +1,11 @@
-import {Body, Controller, Delete, Get, Post, Put, Query, Session} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Session } from '@nestjs/common';
 import {DetalleCarritoService} from "./detalle-carrito.service";
 import {DetalleCarritoCreateDto} from "./detalle-carrito-create.dto";
 import {DetalleCarrito} from "./detalle-carrito.entity";
 import {validate} from "class-validator";
 import {UsuariosService} from "../usuarios/usuarios.service";
 import {CabeceraCarritoService} from "../cabecera-carrito/cabecera-carrito.service";
+import { AnimesService } from '../animes/animes.service';
 
 @Controller('detalle-carrito')
 export class DetalleCarritoController {
@@ -12,37 +13,47 @@ export class DetalleCarritoController {
         private readonly detalleCarritoService: DetalleCarritoService,
         private readonly usuarioService: UsuariosService,
         private readonly cabeceraCarritoService: CabeceraCarritoService,
+        private readonly animesService: AnimesService,
     ) {
     }
 
-    @Post('crear')
+    @Post('crear/:idAnime')
     async crearDetalleCarrito(
-        @Body() detalleCarrito: DetalleCarrito,
+        @Body('cantidad') cantidad: string,
+        @Param('idAnime') idAnime: string,
         @Session() session
     ): Promise<void> {
         const detalleCarritoCreateDto = new DetalleCarritoCreateDto();
-        detalleCarritoCreateDto.cantidad = detalleCarrito.cantidad;
-        detalleCarritoCreateDto.precio = detalleCarrito.precio;
+        detalleCarritoCreateDto.cantidad = +cantidad;
+        detalleCarritoCreateDto.idAnime = +idAnime;
         const errores = await validate(detalleCarritoCreateDto);
         console.error(errores);
         if(errores.length > 0){
 
         } else{
             try{
+                const detalleCarrito = new DetalleCarrito();
+                const anime = await this.animesService.encontrarAnime(+idAnime);
+                detalleCarrito.cantidad = +cantidad;
+                detalleCarrito.precio = anime.precio;
+                detalleCarrito.anime = anime;
+                detalleCarrito.subtotal = this.detalleCarritoService.calcularSubtotal(detalleCarrito.cantidad, detalleCarrito.precio);
                 const carritoActual = await this.cabeceraCarritoService.buscarCarrito({estado:"creado"});
-                if(! carritoActual) {
+                if(! carritoActual[0]) {
                     const usuario = await this.usuarioService.encontrarUsuario(session.usuario.userId);
                     detalleCarrito.subtotal = this.detalleCarritoService.calcularSubtotal(detalleCarrito.cantidad, detalleCarrito.precio);
+                    await this.detalleCarritoService.crearDetalleCarrito(detalleCarrito);
                     const cabeceraCarrito = await this.cabeceraCarritoService.crearCabeceraCarrito(usuario, detalleCarrito);
-                    await this.detalleCarritoService
-                        .crearDetalleCarrito(
-                            detalleCarrito
-                        );
                     session.carritoActual = cabeceraCarrito.id;
                 } else{
+                    //detalleCarrito.cabecera = carritoActual[0];
                     carritoActual[0].detalle.push(detalleCarrito);
+                    await this.cabeceraCarritoService.actualizarCarrrito(carritoActual[0]);
+
+                    await this.detalleCarritoService.crearDetalleCarrito(detalleCarrito);
+
                     carritoActual[0].total = this.cabeceraCarritoService.actualizarTotal(carritoActual[0]);
-                    await this.cabeceraCarritoService.actualizarCarrrito(carritoActual[0])
+                    await this.cabeceraCarritoService.actualizarCarrrito(carritoActual[0]);
 
                 }
 

@@ -45,6 +45,7 @@ export class AnimesService {
       }
 
     ) : Promise<Animes[]>{
+
         return this._repositorioAnimes
           .find({
               where: where,

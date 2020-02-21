@@ -1,4 +1,4 @@
-import {IsInt, IsNotEmpty, IsString, MaxLength, Min} from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsString, MaxLength, Min } from 'class-validator';
 
 export class AnimesCreateDto {
     @IsNotEmpty()
@@ -27,7 +27,7 @@ export class AnimesCreateDto {
     director: string;
 
     @IsNotEmpty()
-    @IsInt()
+    @IsNumber()
     precio: number;
 
     @IsNotEmpty()

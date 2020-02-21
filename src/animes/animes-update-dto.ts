@@ -27,7 +27,7 @@ export class AnimesUpdateDto{
     director: string;
 
     @IsNotEmpty()
-    @IsInt()
+    @IsNumber()
     precio: number;
 
     @IsNotEmpty()

@@ -8,7 +8,7 @@ export class DetalleCarritoCreateDto{
     cantidad: number;
 
     @IsNotEmpty()
-    @IsDecimal()
-    precio: number;
+    @IsInt()
+    idAnime: number;
 
 }

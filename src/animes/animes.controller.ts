@@ -19,8 +19,8 @@ export class AnimesController {
     ) {}
 
     @Post('crear/:id')
-    @Roles('administrador')
-    @UseGuards(AuthGuard('jwt'), RoleGuard)
+    // @Roles('administrador')
+    // @UseGuards(AuthGuard('jwt'), RoleGuard)
     async crearAnime(
         @Body() anime: Animes,
         @Param('id') id: string,
@@ -57,7 +57,7 @@ export class AnimesController {
 
     }
 
-    @Put(':id')
+    @Put('/:id')
     async actualizarAnime(
         @Body() anime: Animes,
         @Param('id') id: string,
@@ -71,6 +71,7 @@ export class AnimesController {
         animeUpdateDTO.precio = anime.precio;
         animeUpdateDTO.id = +id;
         const errores = await validate(animeUpdateDTO);
+        console.error(errores);
         if(errores.length > 0){
 
         } else{
