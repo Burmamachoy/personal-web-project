@@ -1,0 +1,44 @@
+<%- include('../compartido/cabecera')%>
+<div class="container">
+    <h1 align="center">Login Usuario</h1>
+    <form action="http://localhost:3000/auth/login"
+          method="post">
+        <div class="form-group">
+            <label for="usernameID">Correo electrónico</label>
+            <input id="usernameID"
+                   type="text"
+                   name="correo"
+                   placeholder="some@text.com"
+                   title="Ingresar nombre de usuario"
+                   class="form-control">
+            <small id="correoIDHelp"
+                   class="form-text text-muted">
+                Ingresa tu correo electrónico
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="passwordID">Password</label>
+            <input id="passwordID"
+                   type="password"
+                   name="password"
+                   placeholder="********"
+                   title="Ingresar password del usuario"
+                   class="form-control">
+            <small id="nombreIDHelp"
+                   class="form-text text-muted">
+                Ingre
+            </small>
+        </div>
+        <div class="form-group" align="center">
+            <button type="submit"
+                    class="btn btn-success">
+                Login
+            </button>
+            <button type="reset"
+                    class="btn btn-secondary">
+                Limpiar
+            </button>
+        </div>
+    </form>
+</div>
+<%- include('../compartido/pie-de-pagina')%>

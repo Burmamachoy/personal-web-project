@@ -12,7 +12,7 @@ export class CabeceraCarritoController {
 
     @Post('comprar')
     async comprarCarrito(
-        @Query('direccion') direccion: string,
+        @Body('direccion') direccion: string,
         @Session() session,
     ) : Promise<void> {
         const cabeceraCarritoCreateDto = new CabeceraCarritoCreateDto();
@@ -23,8 +23,8 @@ export class CabeceraCarritoController {
 
         } else {
             const idCarrito = session.carritoActual;
-            console.log(idCarrito);
             const carrito = await this.cabeceraCarritoService.encontrarCabeceraCarrito(idCarrito);
+            carrito.direccion = direccion;
             carrito.estado = "comprado";
             carrito.fecha = new Date(Date.now());
             await this.cabeceraCarritoService.actualizarCarrrito(carrito);

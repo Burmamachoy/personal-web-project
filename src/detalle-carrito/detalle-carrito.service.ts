@@ -35,23 +35,18 @@ export class DetalleCarritoService {
     }
 
     buscarDetalles(
-        anime: Animes,
+        where: any = {},
         skip = 0,
         take = 10,
         order: any = {
             id: 'ASC',
         }
     ) : Promise<DetalleCarrito[]>{
-        const consultaWhere = [
-            {
-                anime: anime
-            },
-        ];
 
         return this._repositorioDetalleCarrito
             .find(
                 {
-                    where: consultaWhere,
+                    where: where,
                     skip: skip,
                     take: take,
                     order: order,

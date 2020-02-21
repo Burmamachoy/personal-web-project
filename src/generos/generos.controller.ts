@@ -37,7 +37,7 @@ export class GenerosController {
         }
     }
 
-    @Put(':id')
+    @Post(':id')
     async actualizarGenero(
         @Body() genero: Generos,
         @Param('id') id: string,
@@ -60,7 +60,7 @@ export class GenerosController {
 
     }
 
-    @Delete(':id')
+    @Post(':id')
     eliminarGenero(
         @Param('id') id: string,
     ): Promise<DeleteResult> {

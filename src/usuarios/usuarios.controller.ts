@@ -67,7 +67,7 @@ export class UsuariosController {
         }
     }
 
-    @Put(':id')
+    @Post(':id')
     async actualizarUsuario(
       @Body() usuario: Usuarios,
       @Param('id') id: string,
@@ -91,7 +91,7 @@ export class UsuariosController {
 
     }
 
-    @Delete(':id')
+    @Post(':id')
     eliminarUno(
       @Param('id') id: string,
     ): Promise<DeleteResult> {

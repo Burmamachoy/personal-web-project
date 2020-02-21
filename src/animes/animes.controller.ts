@@ -57,7 +57,7 @@ export class AnimesController {
 
     }
 
-    @Put('/:id')
+    @Post('/:id')
     async actualizarAnime(
         @Body() anime: Animes,
         @Param('id') id: string,
@@ -84,7 +84,7 @@ export class AnimesController {
 
     }
 
-    @Delete(':id')
+    @Post(':id')
     eliminarAnime(
         @Param('id') id: string,
     ): Promise<DeleteResult> {

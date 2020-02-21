@@ -4,7 +4,7 @@ export class DetalleCarritoCreateDto{
 
     @IsNotEmpty()
     @IsInt()
-    @Min(0)
+    @Min(1)
     cantidad: number;
 
     @IsNotEmpty()

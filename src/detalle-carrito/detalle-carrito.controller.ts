@@ -32,16 +32,15 @@ export class DetalleCarritoController {
 
         } else{
             try{
+                const usuario = await this.usuarioService.encontrarUsuario(session.usuario.userId);
                 const detalleCarrito = new DetalleCarrito();
                 const anime = await this.animesService.encontrarAnime(+idAnime);
-                console.log(anime);
                 detalleCarrito.cantidad = +cantidad;
                 detalleCarrito.precio = anime.precio;
                 detalleCarrito.anime = anime;
                 detalleCarrito.subtotal = this.detalleCarritoService.calcularSubtotal(detalleCarrito.cantidad, detalleCarrito.precio);
-                const carritoActual = await this.cabeceraCarritoService.buscarCarrito({estado:"creado"});
+                const carritoActual = await this.cabeceraCarritoService.buscarCarrito({estado:"creado",usuario:usuario});
                 if(! carritoActual[0]) {
-                    const usuario = await this.usuarioService.encontrarUsuario(session.usuario.userId);
                     detalleCarrito.subtotal = this.detalleCarritoService.calcularSubtotal(detalleCarrito.cantidad, detalleCarrito.precio);
                     await this.detalleCarritoService.crearDetalleCarrito(detalleCarrito);
                     const cabeceraCarrito = await this.cabeceraCarritoService.crearCabeceraCarrito(usuario, detalleCarrito);
@@ -49,16 +48,11 @@ export class DetalleCarritoController {
                 } else{
                     //verificar si existe el detalle
                     const anime = await this.animesService.encontrarAnime(+idAnime);
-                    const detalle = await this.detalleCarritoService.buscarDetalles(anime);
-                    console.log('El detalle');
-                    console.log(idAnime)
-                    console.log(detalle);
+                    const detalle = await this.detalleCarritoService.buscarDetalles({anime:anime,cabecera:carritoActual[0]});
                     if(detalle.length == 0){
                         carritoActual[0].detalle.push(detalleCarrito);
                         await this.cabeceraCarritoService.actualizarCarrrito(carritoActual[0]);
-
                         await this.detalleCarritoService.crearDetalleCarrito(detalleCarrito);
-
                         carritoActual[0].total = this.cabeceraCarritoService.actualizarTotal(carritoActual[0]);
                         await this.cabeceraCarritoService.actualizarCarrrito(carritoActual[0]);
                     }
@@ -74,20 +68,23 @@ export class DetalleCarritoController {
         }
     }
 
-    @Put('actualizar')
+    @Post('actualizar')
     async actualizarDetalleCarrito(
     @Query('idAnime') idAnime: string,
     @Query('cantidad') cantidad: string | number,
+    @Session() session,
     ) {
+        const usuario = await this.usuarioService.encontrarUsuario(session.usuario.userId);
+        const carritoActual = await this.cabeceraCarritoService.buscarCarrito({estado:"creado",usuario:usuario});
         const anime = await this.animesService.encontrarAnime(+idAnime);
-        const detalle = await this.detalleCarritoService.buscarDetalles(anime);
+        const detalle = await this.detalleCarritoService.buscarDetalles({anime:anime,cabecera:carritoActual[0]});
         if(+cantidad > 0) {
             detalle[0].cantidad = +cantidad;
             detalle[0].subtotal = this.detalleCarritoService.calcularSubtotal(detalle[0].cantidad, detalle[0].precio);
 
             await this.detalleCarritoService.actualizarDetalle(detalle[0]);
 
-            const carritoActual = await this.cabeceraCarritoService.buscarCarrito({estado:"creado"});
+            const carritoActual = await this.cabeceraCarritoService.buscarCarrito({estado:"creado",usuario:usuario});
             carritoActual[0].total = this.cabeceraCarritoService.actualizarTotal(carritoActual[0]);
             await this.cabeceraCarritoService.actualizarCarrrito(carritoActual[0]);
 
@@ -97,15 +94,21 @@ export class DetalleCarritoController {
 
     }
 
-    @Delete('eliminar/:idAnime')
+    @Post('eliminar/:idAnime')
     async  borrarDetalleCarrrito(
         @Param('idAnime') idAnime : string,
+        @Session() session,
     ) {
+        const usuario = await this.usuarioService.encontrarUsuario(session.usuario.userId);
+        const carritoActual = await this.cabeceraCarritoService.buscarCarrito({estado:"creado",usuario:usuario});
         const anime = await this.animesService.encontrarAnime(+idAnime);
-        const detalle = await this.detalleCarritoService.buscarDetalles(anime);
+        const detalle = await this.detalleCarritoService.buscarDetalles({anime:anime,cabecera:carritoActual[0]});
 
-        if(! detalle){
+        if(detalle){
             await this.detalleCarritoService.borrarDetalleCarrito(detalle[0].id);
+            const carritoActual = await this.cabeceraCarritoService.buscarCarrito({estado:"creado",usuario:usuario});
+            carritoActual[0].total = this.cabeceraCarritoService.actualizarTotal(carritoActual[0]);
+            await this.cabeceraCarritoService.actualizarCarrrito(carritoActual[0]);
         }
 
     }
