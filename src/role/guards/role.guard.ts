@@ -4,7 +4,7 @@ import { Reflector } from '@nestjs/core'
 @Injectable()
 export class RoleGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const roles: string[] = this.reflector.get<string[]>(
       'roles',
       context.getHandler()
@@ -14,11 +14,12 @@ export class RoleGuard implements CanActivate {
       return true;
     }
     const request = context.switchToHttp().getRequest();
+    const response = context.switchToHttp().getResponse();
     try {
       const user = request.session.usuario.roles;
       return roles == user;
     }catch{
-      throw  new UnauthorizedException();
+
     }
 
 

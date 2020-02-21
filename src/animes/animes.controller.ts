@@ -1,9 +1,21 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+    Query,
+    Res,
+    UseGuards
+} from '@nestjs/common';
 import {AnimesService} from "./animes.service";
 import {Animes} from "./animes.entity";
 import {AnimesCreateDto} from "./animes-create.dto";
 import {validate} from "class-validator";
-import {DeleteResult} from "typeorm";
+import {DeleteResult, Like} from "typeorm";
 import {AnimesUpdateDto} from "./animes-update-dto";
 import { GenerosService } from '../generos/generos.service';
 import { Roles } from '../role/decorators/role.decorator';
@@ -18,13 +30,87 @@ export class AnimesController {
         private readonly generosService: GenerosService
     ) {}
 
+    @Get('mostrar-animes/:id')
+    async mostrarAnime(
+        @Param('id')idGenero:string,
+        @Query('mensaje')mensaje:string,
+        @Query('error')error:string,
+        @Query('consultaAnime')consultaAnime:string,
+        @Res() res,
+    ){
+        const genero = await this.generosService.encontrarGenero(+idGenero);
+        let consultaServicio;
+        if(consultaAnime){
+            consultaServicio = [
+                {
+                    generos: genero,
+                    nombre: Like('%' + consultaAnime + '%'),
+                },
+                {
+                    generos: genero,
+                    estudio: Like('%' + consultaAnime + '%'),
+                },
+            ];
+        }else{
+            consultaServicio = [
+                {
+                    generos: genero,
+                },
+            ]
+        }
+        const animes = await this.animesService.buscarAnime(consultaServicio);
+        res.render('anime/rutas/buscar-mostrar-anime',{
+            datos:{
+                animes,
+                genero,
+                error,
+                mensaje,
+            }
+        })
+    }
+
+    @Get('crear-anime/:id')
+    rutaCrearAnime(
+        @Param('id')idGenero:string,
+        @Query('error')error:string,
+        @Res() res,
+    ){
+        res.render(
+            'anime/rutas/crear-anime',{
+                datos: {
+                    idGenero,
+                    error,
+                }
+            }
+        );
+    }
+
+    @Get('actualizar-anime/:id')
+    async rutaActualizarAnime(
+        @Param('error')error:string,
+        @Param('id')idAnime:string,
+        @Res() res,
+    ){
+        const anime = await this.animesService.encontrarAnime(+idAnime);
+        res.render('anime/rutas/editar-anime',{
+            datos: {
+                anime,
+                error,
+            }
+        })
+    }
+
     @Post('crear/:id')
     // @Roles('administrador')
     // @UseGuards(AuthGuard('jwt'), RoleGuard)
     async crearAnime(
         @Body() anime: Animes,
         @Param('id') id: string,
+        @Res() res,
     ): Promise<void> {
+        anime.anioLanzamiento = +anime.anioLanzamiento;
+        anime.numeroEpisodios = +anime.numeroEpisodios;
+        anime.precio = +anime.precio;
         const animeCreateDTO = new AnimesCreateDto();
         animeCreateDTO.nombre = anime.nombre;
         animeCreateDTO.anioLanzamiento = anime.anioLanzamiento;
@@ -36,7 +122,7 @@ export class AnimesController {
         const errores = await validate(animeCreateDTO);
         console.error(errores);
         if (errores.length > 0) {
-
+            res.redirect('/animes/crear-anime/'+id+'?error=Error validando');
         } else {
             try{
                 const genero = this.generosService.encontrarGenero(+id);
@@ -46,22 +132,26 @@ export class AnimesController {
                       .crearAnime(
                         anime,
                       );
+                    res.redirect('/animes/mostrar-animes/'+id+'?mensaje=Anime '+anime.nombre+' creado');
                 } else{
 
                 }
-
             } catch(error){
-                console.error(error)
+                res.redirect('/animes/crear-anime/'+id+'?error=Error del Servidor');
             }
         }
 
     }
 
-    @Post('/:id')
+    @Post('actualizar/:id')
     async actualizarAnime(
         @Body() anime: Animes,
         @Param('id') id: string,
+        @Res() res,
     ): Promise<void> {
+        anime.anioLanzamiento = +anime.anioLanzamiento;
+        anime.numeroEpisodios = +anime.numeroEpisodios;
+        anime.precio = +anime.precio;
         const animeUpdateDTO = new AnimesUpdateDto();
         animeUpdateDTO.nombre = anime.nombre;
         animeUpdateDTO.anioLanzamiento = anime.anioLanzamiento;
@@ -72,26 +162,40 @@ export class AnimesController {
         animeUpdateDTO.id = +id;
         const errores = await validate(animeUpdateDTO);
         console.error(errores);
+        const animeActual = await this.animesService.buscarAnime({id:+id});
         if(errores.length > 0){
-
+            res.redirect('/animes/actualizar-anime/'+id+'?error=Error Validando');
         } else{
-            await  this.animesService
-                .actualizarAnime(
-                    +id,
-                    anime,
-                )
+            try{
+                await  this.animesService
+                    .actualizarAnime(
+                        +id,
+                        anime,
+                    );
+                res.redirect('/animes/mostrar-animes/'+animeActual[0].generos.id+'?mensaje=Anime '+anime.nombre+' editado existosamente');
+            }catch (e) {
+                res.redirect('/animes/actualizar-anime/'+id+'?error=Error del Servidor');
+            }
         }
 
     }
 
-    @Post(':id')
-    eliminarAnime(
+    @Post('eliminar/:id')
+    async eliminarAnime(
         @Param('id') id: string,
-    ): Promise<DeleteResult> {
-        return this.animesService
-            .borrarAnime(
-                +id,
-            )
+        @Res() res,
+    ): Promise<void> {
+        const anime = await this.animesService.buscarAnime({id:+id});
+        try{
+            await this.animesService
+                .borrarAnime(
+                    +id,
+                );
+            res.redirect('/animes/mostrar-animes/'+anime[0].generos.id+'?mensaje=Anime '+anime[0].nombre+' fue eliminado');
+        }catch (e) {
+            res.redirect('/animes/mostrar-animes/'+anime[0].generos.id+'?error=Error del servidor');
+        }
+
     }
 
     @Get(':id')

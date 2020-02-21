@@ -1,0 +1,44 @@
+<%- include('../../compartido/cabecera') %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/generos/mostrar-generos/">Genero: <%=datos.genero.nombre%></a>
+</nav>
+<div class="container">
+    <% if(datos.mensaje){ %>
+        <div class="alert alert-primary" role="alert">
+            <%= datos.mensaje %>
+        </div>
+    <% } %>
+    <% if(datos.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= datos.error %>
+        </div>
+    <% } %>
+    <h1>Animes</h1>
+    <form action="/animes/mostrar-animes/<%=datos.genero.id%>"
+          method="GET"
+    >
+        <div class="form-group">
+            <label for="consultaID">Buscar anime:</label>
+            <input id="consultaID"
+                   type="text"
+                   name="consultaAnime"
+                   placeholder="Ej: Steins Gate o 1999"
+                   title="Ingresar la busqueda por nombre o año de Lanzamiento"
+                   class="form-control">
+            <small id="consultaIDHelp"
+                   class="form-text text-muted">
+                Puede buscar por nombre o año de Lanzamiento.
+            </small>
+            <a name="crearAnime"
+               href="/animes/crear-anime/<%=datos.genero.id%>"
+               class="btn btn-success">
+                Crear Anime
+            </a>
+        </div>
+    </form>
+    <%- include('../componentes/mostrar-tabla',
+    {
+    animes: datos.animes
+    }) %>
+</div>
+<%- include('../../compartido/pie-de-pagina') %>

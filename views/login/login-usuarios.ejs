@@ -1,5 +1,15 @@
 <%- include('../compartido/cabecera')%>
 <div class="container">
+    <% if(datos.mensaje){ %>
+        <div class="alert alert-primary" role="alert">
+            <%= datos.mensaje %>
+        </div>
+    <% } %>
+    <% if(datos.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= datos.error %>
+        </div>
+    <% } %>
     <h1 align="center">Login Usuario</h1>
     <form action="http://localhost:3000/auth/login"
           method="post">
@@ -7,7 +17,7 @@
             <label for="usernameID">Correo electrónico</label>
             <input id="usernameID"
                    type="text"
-                   name="correo"
+                   name="username"
                    placeholder="some@text.com"
                    title="Ingresar nombre de usuario"
                    class="form-control">
@@ -26,7 +36,7 @@
                    class="form-control">
             <small id="nombreIDHelp"
                    class="form-text text-muted">
-                Ingre
+                Ingresar
             </small>
         </div>
         <div class="form-group" align="center">
@@ -38,6 +48,12 @@
                     class="btn btn-secondary">
                 Limpiar
             </button>
+            <a href="/usuarios/registro-usuario"
+               class="btn btn-primary btn-lg active"
+               role="button"
+               aria-pressed="true">
+                Registro
+            </a>
         </div>
     </form>
 </div>

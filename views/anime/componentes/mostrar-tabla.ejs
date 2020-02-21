@@ -1,0 +1,64 @@
+<table class="table"> <!-- table -->
+    <thead> <!-- thead -->
+    <tr> <!-- table row -->
+        <th scope="col"> <!-- table header -->
+            ID
+        </th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Director</th>
+        <th scope="col">Studio</th>
+        <th scope="col">Año de Lanzamiento</th>
+        <th scope="col">Episodios</th>
+        <th scope="col">Precio</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% animes.forEach( (anime) => {%>
+        <tr> <!-- table row -->
+            <th scope="row">
+                <%= anime.id%>
+            </th> <!-- table header -->
+            <td>
+                <%= anime.nombre%>
+            </td> <!-- table detail -->
+            <td>
+                <%= anime.director%>
+            </td> <!-- table detail -->
+            <td>
+                <%= anime.estudio%>
+            </td>
+            <td>
+                <%= anime.anioLanzamiento%>
+            </td>
+            <td>
+                <%= anime.numeroEpisodios%>
+            </td>
+            <td>
+                <%= anime.precio%>
+            </td>
+            <td>
+                <a href="/movimiento/mostrar-movimiento/<%= anime.id %>/   ">
+                    <button type="button"
+                            class="btn btn-dark">
+                        Comprar Anime
+                    </button>
+                </a>
+                <a href="/animes/actualizar-anime/<%= anime.id %>">
+                    <button type="button"
+                            class="btn btn-info">
+                        Editar
+                    </button>
+                </a>
+                <form action="/animes/eliminar/<%= anime.id %>"
+                      method="POST"
+                >
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+    <%}); %>
+    </tbody> <!-- tbody -->
+</table>

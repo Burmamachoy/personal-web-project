@@ -1,0 +1,58 @@
+<%- include('../../compartido/cabecera') %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Bienvenido: <%=datos.session.usuario.correo%></a>
+    <a class="navbar-brand">Rol: <%=datos.session.usuario.roles%></a>
+    <div>
+        <a name="verCarrito"
+           href="/carrito/mostrar-carrito"
+           class="btn btn-success">
+            Ver Carrito
+        </a>
+        <a name="logout"
+           href="/logout"
+           class="btn btn-danger">
+            Logout
+        </a>
+    </div>
+</nav>
+<div class="container">
+    <% if(datos.mensaje){ %>
+        <div class="alert alert-primary" role="alert">
+            <%= datos.mensaje %>
+        </div>
+    <% } %>
+
+    <% if(datos.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= datos.error %>
+        </div>
+    <% } %>
+    <h1>Generos</h1>
+    <form action="/generos/mostrar-generos"
+          method="GET"
+    >
+        <div class="form-group">
+            <label for="consultaID">Buscar genero:</label>
+            <input id="consultaID"
+                   type="text"
+                   name="consultaGenero"
+                   placeholder="Ej: Shonen"
+                   title="Ingresar la busqueda por nombre de Genero"
+                   class="form-control">
+            <small id="cedulaIDHelp"
+                   class="form-text text-muted">
+                Puede buscar por nombre.
+            </small>
+            <a name="crearPokemon"
+               href="/generos/crear-genero"
+               class="btn btn-success">
+                Crear Genero
+            </a>
+        </div>
+    </form>
+    <%- include('../componentes/mostrar-tabla',
+    {
+    generos: datos.generos
+    }) %>
+</div>
+<%- include('../../compartido/pie-de-pagina') %>

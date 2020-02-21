@@ -40,8 +40,7 @@ export class CabeceraCarrito{
     @ManyToOne(type => Usuarios, usuario => usuario.carritos)
     usuario: Usuarios;
 
-    @OneToMany(type => DetalleCarrito, detalle => detalle.cabecera,{cascade: true
-})
+    @OneToMany(type => DetalleCarrito, detalle => detalle.cabecera)
     detalle: DetalleCarrito[];
 
 }

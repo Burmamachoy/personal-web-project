@@ -1,0 +1,53 @@
+<table class="table"> <!-- table -->
+    <thead> <!-- thead -->
+    <tr> <!-- table row -->
+        <th scope="col"> <!-- table header -->
+            ID
+        </th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Defensa</th>
+        <th scope="col">Público Principal</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% generos.forEach( (genero) => {%>
+        <tr> <!-- table row -->
+            <th scope="row">
+                <%= genero.id%>
+            </th> <!-- table header -->
+            <td>
+                <%= genero.nombre%>
+            </td> <!-- table detail -->
+            <td>
+                <%= genero.descripcion%>
+            </td> <!-- table detail -->
+            <td>
+                <%= genero.publicoPrincipal%>
+            </td>
+            <td>
+                <a href="/generos/actualizar-genero/<%= genero.id %>">
+                    <button type="button"
+                            class="btn btn-info">
+                        Editar
+                    </button>
+                </a>
+                <form action="/generos/eliminar/<%= genero.id %>"
+                      method="POST"
+                >
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </form>
+                <a href="/animes/mostrar-animes/<%= genero.id %>/ ">
+                    <button type="button"
+                            class="btn btn-dark">
+                        Ver Animes
+                    </button>
+                </a>
+            </td>
+        </tr>
+    <%}); %>
+    </tbody> <!-- tbody -->
+</table>

@@ -1,0 +1,47 @@
+<%- include('../compartido/cabecera')%>
+<div class="container">
+    <%if(datos.error){%>
+    <div class="alert alert-danger" role="alert">
+        <%=datos.error%>
+    </div>
+    <%}%>
+    <div class="form-group">
+        <h1 align="center">Registro</h1>
+    </div>
+    <form action="http://localhost:3000/usuarios/crear/2"
+          method="post">
+        <div class="form-group">
+            <input id="correoID"
+                   type="email"
+                   name="correo"
+                   title="Ingresa tu correo"
+                   class="form-control"
+                   placeholder="Email: junt_@jaja.dot">
+            <small id="correoIDHelp"
+                   class="form-text text-muted">
+                Ingresa tu correo con el formato correcto
+            </small>
+        </div>
+        <div class="form-group">
+            <input id="contrasenaID"
+                   type="password"
+                   name="password"
+                   placeholder="Password: ***********"
+                   title="Ingresar contrasena"
+                   class="form-control">
+            <small id="contrasenaIDHelp"
+                   class="form-text text-muted">
+                Ingresa una contraseña con al menos 8 caracteres
+            </small>
+        </div>
+        <button type="Login"
+                class="btn btn-success">
+            Registrar
+        </button>
+        <button type="reset"
+                class="btn btn-secondary">
+            Reset
+        </button>
+    </form>
+</div>
+<%- include('../compartido/pie-de-pagina')%>

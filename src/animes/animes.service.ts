@@ -48,6 +48,7 @@ export class AnimesService {
 
         return this._repositorioAnimes
           .find({
+              relations: ["generos"],
               where: where,
               skip: skip,
               take: take,

@@ -1,0 +1,96 @@
+<%- include('../../compartido/cabecera') %>
+<div class="container">
+    <%if(datos.error){%>
+    <div class="alert alert-danger" role="alert">
+        <%=datos.error%>
+    </div>
+    <%}%>
+    <div class="form-group">
+        <h1 align="center">Crear Anime</h1>
+    </div>
+    <form action="http://localhost:3000/animes/crear/<%=datos.idGenero%>"
+          method="post">
+        <div class="form-group">
+            <input id="nombreAnimeID"
+                   type="text"
+                   name="nombre"
+                   title="Ingresar nombre del anime"
+                   class="form-control"
+                   placeholder="Dr Stone">
+            <small id="nombreAnimeIDHelp"
+                   class="form-text text-muted">
+                Ingresa el nombre del Anime
+            </small>
+        </div>
+        <div class="form-group">
+            <input id="directorAnimeID"
+                   type="text"
+                   name="director"
+                   title="Ingresar el director del Anime"
+                   class="form-control"
+                   placeholder="Kishimoto">
+            <small id="directorIDHelp"
+                   class="form-text text-muted">
+                Ingresa el nombre del director
+            </small>
+        </div>
+        <div class="form-group">
+            <input id="estudioID"
+                   type="text"
+                   name="estudio"
+                   title="Ingresar el estudio del anime"
+                   class="form-control"
+                   placeholder="Toei">
+            <small id="estudioIDHelp"
+                   class="form-text text-muted">
+                Ingresa el Estudio del Anime
+            </small>
+        </div>
+        <div class="form-group">
+            <input id="anioLanzamientoID"
+                   type="number"
+                   name="anioLanzamiento"
+                   title="Ingresar el Año de Lanzamiento del anime"
+                   class="form-control"
+                   placeholder="1990">
+            <small id="anioLanzamientoIDHelp"
+                   class="form-text text-muted">
+                Ingresa el Año de Lanzamiento del anime
+            </small>
+        </div>
+        <div class="form-group">
+            <input id="episodiosID"
+                   type="number"
+                   name="numeroEpisodios"
+                   title="Ingresar el número de episodios del anime"
+                   class="form-control"
+                   placeholder="52">
+            <small id="espisodiosIDHelp"
+                   class="form-text text-muted">
+                Ingresar el número de episodios del anime
+            </small>
+        </div>
+        <div class="form-group">
+            <input id="precioAnimeID"
+                   type="number"
+                   name="precio"
+                   title="Ingresar el precio del Anime"
+                   class="form-control"
+                   step="0.01"
+                   placeholder="21.3">
+            <small id="precioAnimeIDHelp"
+                   class="form-text text-muted">
+                Ingresa el precio del Anime, no puede ser 0
+            </small>
+        </div>
+        <button type="submit"
+                class="btn btn-success">
+            Crear
+        </button>
+        <button type="reset"
+                class="btn btn-secondary">
+            Reset
+        </button>
+    </form>
+</div>
+<%- include('../../compartido/pie-de-pagina') %>

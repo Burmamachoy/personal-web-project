@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, Res} from '@nestjs/common';
 import {UsuariosService} from "./usuarios.service";
 import {Usuarios} from "./usuarios.entity";
 import {UsuariosCreateDto} from "./usuarios-create.dto";
@@ -15,10 +15,23 @@ export class UsuariosController {
     ) {
     }
 
+    @Get('registro-usuario')
+    rutaRegistro(
+        @Res() res,
+        @Query('error') error:string,
+    ){
+        res.render('registro/registro-usuarios',{
+            datos:{
+                error,
+            }
+        })
+    }
+
     @Post('crear/:id')
     async crearUsuario(
       @Body() usuario: Usuarios,
       @Param('id') id: string,
+      @Res() res,
     ): Promise<void> {
         const usuarioCreateDto = new UsuariosCreateDto();
         usuarioCreateDto.correo = usuario.correo;
@@ -28,7 +41,7 @@ export class UsuariosController {
         const errores = await validate(usuarioCreateDto);
         console.error(errores);
         if (errores.length > 0) {
-
+            res.redirect('/usuarios/registro-usuario?error=Error Validando');
         } else {
             usuario.password = this.usuariosService.generarPasswordHash(usuario.password, usuario.salt);
             const rol = this.usuariosService.encontrarRol(+id);
@@ -41,8 +54,9 @@ export class UsuariosController {
                   .crearUsuario(
                     usuario,
                   );
-
+                res.redirect('../../?mensaje=Usuario Registrado Exitosamente')
             } catch (error) {
+                res.redirect('/usuarios/registro-usuario?error=Error del Servidor');
                 console.error(error)
             }
         }

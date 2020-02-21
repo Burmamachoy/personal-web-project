@@ -1,0 +1,55 @@
+<%- include('../../compartido/cabecera') %>
+<div class="container">
+    <%if(datos.error){%>
+    <div class="alert alert-danger" role="alert">
+        <%=datos.error%>
+    </div>
+    <%}%>
+    <div class="form-group">
+        <h1 align="center">Editar Genero</h1>
+    </div>
+    <form action="http://localhost:3000/generos/actualizar/<%=datos.genero.id%>"
+          method="post">
+        <div class="form-group">
+            <input id="nombreGeneroID"
+                   type="text"
+                   name="nombre"
+                   title="Ingresar nombre del genero"
+                   class="form-control"
+                   value="<%=datos.genero.nombre%>">
+            <small id="nombreGeneroIDHelp"
+                   class="form-text text-muted">
+                Ingresa el nombre del género
+            </small>
+            <input id="descripcionGeneroID"
+                   type="text"
+                   name="descripcion"
+                   title="Ingresar la descripción del genero"
+                   class="form-control"
+                   value="<%=datos.genero.descripcion%>">
+            <small id="descripcionGeneroIDHelp"
+                   class="form-text text-muted">
+                Ingresa la descripción del género
+            </small>
+            <input id="publicoPrincipalID"
+                   type="text"
+                   name="publicoPrincipal"
+                   title="Ingresar público principal del genero"
+                   class="form-control"
+                   value="<%=datos.genero.publicoPrincipal%>">
+            <small id="publicoPrincipalGeneroIDHelp"
+                   class="form-text text-muted">
+                Ingresa la descripción del género
+            </small>
+        </div>
+        <button type="submit"
+                class="btn btn-success">
+            Confirmar
+        </button>
+        <button type="reset"
+                class="btn btn-secondary">
+            Reset
+        </button>
+    </form>
+</div>
+<%- include('../../compartido/pie-de-pagina') %>
