@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {forwardRef, Module} from '@nestjs/common';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {DetalleCarrito} from "./detalle-carrito.entity";
 import {DetalleCarritoService} from "./detalle-carrito.service";
@@ -10,7 +10,7 @@ import { AnimesModule } from '../animes/animes.module';
 @Module({
     imports: [
         UsuariosModule,
-        CabeceraCarritoModule,
+        forwardRef(() => CabeceraCarritoModule),
         AnimesModule,
         TypeOrmModule
             .forFeature([

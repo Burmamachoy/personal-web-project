@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {Animes} from "./animes.entity";
 import {InjectRepository} from "@nestjs/typeorm";
-import {DeleteResult, Repository} from "typeorm";
+import {DeleteResult, FindOneOptions, Repository} from "typeorm";
 
 @Injectable()
 export class AnimesService {
@@ -56,5 +56,11 @@ export class AnimesService {
           })
     }
 
-
+    encontrarUno(id: number): Promise<Animes | undefined> {
+        const options: FindOneOptions<Animes> ={
+            where : {id:id},
+            relations : ["generos"]
+        };
+        return this._repositorioAnimes.findOne(options);
+    }
 }

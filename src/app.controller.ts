@@ -22,7 +22,7 @@ export class AppController {
       datos:{
         error,
         mensaje
-      }
+      },
     });
   }
 

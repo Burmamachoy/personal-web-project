@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {CabeceraCarrito} from "./cabecera-carrito.entity";
-import {Repository} from "typeorm";
+import {FindOneOptions, Repository} from "typeorm";
 import {DetalleCarrito} from "../detalle-carrito/detalle-carrito.entity";
 import {Usuarios} from "../usuarios/usuarios.entity";
 
@@ -63,6 +63,14 @@ export class CabeceraCarritoService {
                     take: take,
                     order: order,
                 })
+    }
+
+    encontrarUno(id: number): Promise<CabeceraCarrito | undefined> {
+        const options: FindOneOptions<CabeceraCarrito> = {
+            where : {id:id},
+            relations : ["detalle"]
+        };
+        return this._repositorioCabeceraCarrito.findOne(options);
     }
 
 }

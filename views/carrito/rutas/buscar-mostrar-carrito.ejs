@@ -1,0 +1,31 @@
+<%- include('../../compartido/cabecera') %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/generos/mostrar-generos/">Pagina Principal</a>
+    <div>
+        <a name="crearPokemon"
+           href="/cabecera-carrito/comprar-carrito/<%=datos.carrito.id%>"
+           class="btn btn-success">
+            Pagar carrito
+        </a>
+    </div>
+</nav>
+<div class="container">
+    <% if(datos.mensaje){ %>
+        <div class="alert alert-primary" role="alert">
+            <%= datos.mensaje %>
+        </div>
+    <% } %>
+
+    <% if(datos.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= datos.error %>
+        </div>
+    <% } %>
+
+    <h1>Carrito</h1>
+    <%- include('../componentes/mostrar-tabla',
+    {
+    detalles: datos.detalles
+    }) %>
+</div>
+<%- include('../../compartido/pie-de-pagina') %>

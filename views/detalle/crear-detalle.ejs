@@ -1,0 +1,42 @@
+<%- include('../compartido/cabecera') %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/animes/mostrar-animes/<%=datos.anime.generos.id%>">Anime: <%=datos.anime.nombre%></a>
+</nav>
+<div class="container">
+    <% if(datos.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= datos.error %>
+        </div>
+    <% } %>
+    <label for="precioID">Precio</label>
+    <input class="form-control"
+           id="precioID"
+           type="text"
+           value="<%=datos.anime.precio%>"
+           readonly>
+    <form action="http://localhost:3000/detalle-carrito/crear/<%=datos.anime.id%>"
+          method="post">
+        <div class="form-group">
+            <label for="cantidadAnimeID">Cantidad</label>
+            <input id="cantidadAnimeID"
+                   type="number"
+                   name="cantidad"
+                   title="Ingresar la cantidad de animes"
+                   class="form-control"
+                   placeholder="4">
+            <small id="cantidadAnimeIDHelp"
+                   class="form-text text-muted">
+                Ingresa la cantidad de Animes que va a comprar, no puede ser 0
+            </small>
+        </div>
+        <button type="submit"
+                class="btn btn-success">
+            Añadir al Carrito
+        </button>
+        <button type="reset"
+                class="btn btn-secondary">
+            Limpiar
+        </button>
+    </form>
+</div>
+<%- include('../compartido/pie-de-pagina') %>

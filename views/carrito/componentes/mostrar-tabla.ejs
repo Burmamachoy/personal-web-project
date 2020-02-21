@@ -4,52 +4,39 @@
         <th scope="col"> <!-- table header -->
             ID
         </th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Director</th>
-        <th scope="col">Studio</th>
-        <th scope="col">Año de Lanzamiento</th>
-        <th scope="col">Episodios</th>
+        <th scope="col">Anime</th>
         <th scope="col">Precio</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Subtotal</th>
+        <th scope="col">Acciones</th>
     </tr>
     </thead>
     <tbody>
-    <% animes.forEach( (anime) => {%>
+    <% detalles.forEach( (detalle) => {%>
         <tr> <!-- table row -->
             <th scope="row">
-                <%= anime.id%>
+                <%= detalle.id%>
             </th> <!-- table header -->
             <td>
-                <%= anime.nombre%>
+                <%= detalle.anime.nombre%>
             </td> <!-- table detail -->
             <td>
-                <%= anime.director%>
+                <%= detalle.precio%>
             </td> <!-- table detail -->
             <td>
-                <%= anime.estudio%>
+                <%= detalle.cantidad%>
+            </td> <!-- table detail -->
+            <td>
+                <%= detalle.subtotal%>
             </td>
             <td>
-                <%= anime.anioLanzamiento%>
-            </td>
-            <td>
-                <%= anime.numeroEpisodios%>
-            </td>
-            <td>
-                <%= anime.precio%>
-            </td>
-            <td>
-                <a href="/detalle-carrito/crear-detalle/<%= anime.id %>/   ">
-                    <button type="button"
-                            class="btn btn-dark">
-                        Comprar Anime
-                    </button>
-                </a>
-                <a href="/animes/actualizar-anime/<%= anime.id %>">
+                <a href="/detalle-carrito/actualizar-carrito/<%= detalle.id %>">
                     <button type="button"
                             class="btn btn-info">
                         Editar
                     </button>
                 </a>
-                <form action="/animes/eliminar/<%= anime.id %>"
+                <form action="/detalle-carrito/eliminar/<%= detalle.anime.id %>"
                       method="POST"
                 >
                     <button type="submit"

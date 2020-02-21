@@ -28,6 +28,7 @@ export class GenerosController {
             ];
         }
         const generos = await this.generosService.buscarGenero(consultaServicio);
+        console.log(session);
         res.render('genero/rutas/buscar-mostrar-genero',{
             datos:{
                 mensaje,

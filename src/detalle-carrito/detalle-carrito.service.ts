@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {DetalleCarrito} from "./detalle-carrito.entity";
-import {DeleteResult, Repository} from "typeorm";
+import {DeleteResult, FindOneOptions, Repository} from "typeorm";
 import {CabeceraCarrito} from "../cabecera-carrito/cabecera-carrito.entity";
 import {Animes} from "../animes/animes.entity";
 
@@ -46,6 +46,7 @@ export class DetalleCarritoService {
         return this._repositorioDetalleCarrito
             .find(
                 {
+                    relations: ["anime"],
                     where: where,
                     skip: skip,
                     take: take,
@@ -56,6 +57,14 @@ export class DetalleCarritoService {
     encontrarDetalleCarrito(id: number): Promise<DetalleCarrito | undefined>{
         return this._repositorioDetalleCarrito
             .findOne(id)
+    }
+
+    encontrarUno(id: number): Promise<DetalleCarrito | undefined> {
+        const options: FindOneOptions<DetalleCarrito> ={
+            where : {id:id},
+            relations : ["anime"]
+        };
+        return this._repositorioDetalleCarrito.findOne(options);
     }
 
 }

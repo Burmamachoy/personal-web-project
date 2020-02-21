@@ -16,8 +16,6 @@ import { AuthModule } from './auth/auth.module';
 import {Roles} from "./usuarios/roles.entity";
 import { DetalleCarritoController } from './detalle-carrito/detalle-carrito.controller';
 import { CabeceraCarritoController } from './cabecera-carrito/cabecera-carrito.controller';
-import { CabeceraCarritoService } from './cabecera-carrito/cabecera-carrito.service';
-import { DetalleCarritoService } from './detalle-carrito/detalle-carrito.service';
 import { DetalleCarritoModule } from './detalle-carrito/detalle-carrito.module';
 import { CabeceraCarritoModule } from './cabecera-carrito/cabecera-carrito.module';
 import { CabeceraCarrito } from './cabecera-carrito/cabecera-carrito.entity';
