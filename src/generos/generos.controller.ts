@@ -1,10 +1,12 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query, Res, Session} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, Res, Session, UseGuards} from '@nestjs/common';
 import {GenerosService} from "./generos.service";
 import {Generos} from "./generos.entity";
 import {GenerosCreateDto} from "./generos-create.dto";
 import {validate} from "class-validator";
 import {DeleteResult, Like} from "typeorm";
 import {GenerosUpdateDto} from "./generos-update-dto";
+import {Roles} from "../role/decorators/role.decorator";
+import {RoleGuard} from "../role/guards/role.guard";
 
 @Controller('generos')
 export class GenerosController {
@@ -67,6 +69,8 @@ export class GenerosController {
     }
 
     @Post('crear')
+    @Roles('administrador')
+    @UseGuards(RoleGuard)
     async crearGenero(
         @Body() genero: Generos,
         @Res() res,
@@ -93,6 +97,8 @@ export class GenerosController {
     }
 
     @Post('actualizar/:id')
+    @Roles('administrador')
+    @UseGuards(RoleGuard)
     async actualizarGenero(
         @Body() genero: Generos,
         @Param('id') id: string,
@@ -121,6 +127,8 @@ export class GenerosController {
     }
 
     @Post('eliminar/:id')
+    @Roles('administrador')
+    @UseGuards(RoleGuard)
     async eliminarGenero(
         @Param('id') id: string,
         @Res() res,

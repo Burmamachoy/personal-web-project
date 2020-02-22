@@ -3,7 +3,7 @@ import {
     Body,
     Controller,
     Delete,
-    Get,
+    Get, Head,
     Param,
     Post,
     Put,
@@ -21,6 +21,7 @@ import { GenerosService } from '../generos/generos.service';
 import { Roles } from '../role/decorators/role.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from '../role/guards/role.guard';
+import {UsuariosService} from "../usuarios/usuarios.service";
 
 @Controller('animes')
 @UseGuards(RoleGuard)
@@ -101,8 +102,8 @@ export class AnimesController {
     }
 
     @Post('crear/:id')
-    // @Roles('administrador')
-    // @UseGuards(AuthGuard('jwt'), RoleGuard)
+     @Roles('administrador')
+     @UseGuards(RoleGuard)
     async crearAnime(
         @Body() anime: Animes,
         @Param('id') id: string,
@@ -144,6 +145,8 @@ export class AnimesController {
     }
 
     @Post('actualizar/:id')
+    @Roles('administrador')
+    @UseGuards(RoleGuard)
     async actualizarAnime(
         @Body() anime: Animes,
         @Param('id') id: string,
@@ -181,6 +184,8 @@ export class AnimesController {
     }
 
     @Post('eliminar/:id')
+    @Roles('administrador')
+    @UseGuards(RoleGuard)
     async eliminarAnime(
         @Param('id') id: string,
         @Res() res,

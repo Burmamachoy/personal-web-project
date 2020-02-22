@@ -46,8 +46,10 @@ export class AppController {
   ) {
     const usuario = await this.usuarioService.encontrarUsuario(req.user.id);
     const carrito = await this.carritoService.buscarCarrito([{estado:"creado",usuario:usuario}]);
-    if(carrito[0]){
+    if(carrito[0]) {
       session.carritoActual = carrito[0].id;
+    } else{
+      session.carritoActual = 0;
     }
     session.usuario = {
       correo: req.user.correo,
@@ -56,6 +58,8 @@ export class AppController {
     };
     console.log(session);
     console.log(req.user);
+    console.log(this.authService.login(req.user));
+    session.token =  await this.authService.login(req.user);
     //return this.authService.login(req.user);
     res.redirect('../generos/mostrar-generos');
   }

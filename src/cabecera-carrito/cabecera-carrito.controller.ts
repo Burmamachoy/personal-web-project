@@ -20,15 +20,20 @@ export class CabeceraCarritoController {
         @Res() res,
     ){
         const carrito = await this.cabeceraCarritoService.encontrarCabeceraCarrito(+idCarrito);
-        const detalles = await this.detalleService.buscarDetalles({cabecera: carrito});
-        res.render('carrito/rutas/buscar-mostrar-carrito',{
-            datos:{
-                carrito,
-                detalles,
-                error,
-                mensaje,
-            }
-        });
+        if(!carrito){
+            res.redirect('/generos/mostrar-generos?error=No tiene animes en el carrito');
+        }else{
+            const detalles = await this.detalleService.buscarDetalles({cabecera: carrito});
+            res.render('carrito/rutas/buscar-mostrar-carrito',{
+                datos:{
+                    carrito,
+                    detalles,
+                    error,
+                    mensaje,
+                }
+            });
+        }
+
     }
 
     @Get('comprar-carrito/:id')
@@ -66,6 +71,7 @@ export class CabeceraCarritoController {
                 carrito.estado = "comprado";
                 carrito.fecha = new Date(Date.now());
                 await this.cabeceraCarritoService.actualizarCarrrito(carrito);
+                session.carritoActual = 0;
                 res.redirect('/generos/mostrar-generos?mensaje=Ha comprado un nuevo producto');
             }catch (e) {
                 res.redirect('/cabecera-carrito/comprar-carrito/'+session.carrito+'?error=Error del Servidor');
